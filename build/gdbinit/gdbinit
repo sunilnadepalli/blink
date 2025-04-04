@@ -1,0 +1,2 @@
+source /home/sunil/git/esp/blink/build/gdbinit/symbols
+source /home/sunil/git/esp/blink/build/gdbinit/connect
