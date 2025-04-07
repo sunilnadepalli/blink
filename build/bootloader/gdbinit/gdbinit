@@ -1,2 +1,0 @@
-source /home/sunil/git/esp/blink/build/bootloader/gdbinit/symbols
-source /home/sunil/git/esp/blink/build/bootloader/gdbinit/connect

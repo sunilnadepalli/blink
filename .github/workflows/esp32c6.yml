@@ -1,0 +1,53 @@
+name: ESP32-C6 CI Build
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    env:
+      IDF_PATH: ${{ github.workspace }}/esp-idf
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Clone ESP-IDF
+      run: |
+        git clone --recursive https://github.com/espressif/esp-idf.git $IDF_PATH
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+
+    - name: Install ESP-IDF tools
+      run: |
+        python -m pip install --upgrade pip
+        cd $IDF_PATH
+        ./install.sh
+
+    - name: Build firmware
+      run: |
+        . $IDF_PATH/export.sh
+        idf.py set-target esp32c6
+        idf.py build
+
+    - name: Show firmware size
+      run: |
+        . $IDF_PATH/export.sh
+        idf.py size
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: firmware
+        path: build
+
